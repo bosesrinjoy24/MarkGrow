@@ -1,0 +1,26 @@
+{
+  "name": "markgrow-backend",
+  "version": "1.0.0",
+  "description": "Backend server for MarkGrow contact forms",
+  "main": "backend-example.js",
+  "scripts": {
+    "start": "node backend-example.js",
+    "dev": "nodemon backend-example.js"
+  },
+  "keywords": [
+    "seo",
+    "contact-form",
+    "backend"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemailer": "^6.9.7",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
