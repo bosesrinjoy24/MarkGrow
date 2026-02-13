@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #weather { margin: 20px; }
+        #search { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div id="weather">
+        <h1>Weather Dashboard</h1>
+        <div id="search">
+            <input type="text" id="city-input" placeholder="Enter city name">
+            <button id="search-button">Search</button>
+        </div>
+        <div id="current-weather"></div>
+        <h2>5-Day Forecast</h2>
+        <div id="forecast"></div>
+    </div>
+
+    <script>
+        const apiKey = 'YOUR_API_KEY'; // Insert your API key here
+        const currentWeatherElement = document.getElementById('current-weather');
+        const forecastElement = document.getElementById('forecast');
+        const searchButton = document.getElementById('search-button');
+        const cityInput = document.getElementById('city-input');
+
+        function fetchWeather(city) {
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+                .then(response => response.json())
+                .then(data => displayCurrentWeather(data));
+            fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`)
+                .then(response => response.json())
+                .then(data => displayForecast(data));
+        }
+
+        function displayCurrentWeather(data) {
+            currentWeatherElement.innerHTML = `<h2>Current Weather in ${data.name}</h2>\n` +
+                `<p>Temperature: ${data.main.temp} °C</p>\n` +
+                `<p>Weather: ${data.weather[0].description}</p>\n` +
+                `<p>Wind Speed: ${data.wind.speed} m/s</p>`;
+        }
+
+        function displayForecast(data) {
+            forecastElement.innerHTML = '';
+            data.list.forEach((item, index) => {
+                if (index % 8 === 0) { // Display forecast every 24 hours
+                    forecastElement.innerHTML += `<div>\n` + 
+                        `<h3>${new Date(item.dt * 1000).toLocaleDateString()}</h3>\n` + 
+                        `<p>Temperature: ${item.main.temp} °C</p>\n`+
+                        `<p>Weather: ${item.weather[0].description}</p>\n` + 
+                        `</div>`;
+                }
+            });
+        }
+
+        searchButton.addEventListener('click', () => {
+            const city = cityInput.value;
+            fetchWeather(city);
+        });
+    </script>
+</body>
+</html>
